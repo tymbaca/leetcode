@@ -65,6 +65,10 @@ func (c *LFUCache) Put(key int, value int) {
 	if ok {
 		oldBucket := c.buckets[el.freq]
 		oldBucket.Remove(el.elem)
+		if el.freq == c.minFreq && oldBucket.Len() == 0 {
+			c.minFreq++
+		}
+
 		el.freq++
 	} else {
 		if c.len == c.cap {
